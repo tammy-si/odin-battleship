@@ -68,9 +68,20 @@ test('placing a ship at [[0, 0], [1, 0], [2, 0], [3, 0]] should return true and 
             isSunk: expect.any(Function)
         ,})
     }
-    console.log(currBoard[0][0]);
-    console.log(currBoard[1][0]);
-    console.log(currBoard[0][0] === currBoard[1][0]);
+    // make sure all the other spots are 0
+    // for the first 4 rows, make sure col 1 - 9 are empty
+    for (let i = 0; i < 4; i++) {
+        for (let j = 1; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+    // all the other rows and columns equal zero
+    for (let i = 4; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
     // make sure there all the same ship object
     expect((currBoard[0][0] == currBoard[1][0]) == (currBoard[0][0] == currBoard[2][0]) == (currBoard[0,0] == currBoard[3,0])).toBe(true);
 });
+
