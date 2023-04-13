@@ -55,20 +55,22 @@ test('ship coords [[5, 6], [5, 7], [5, 8], [5, 9], [5, 10]] should return false'
     expect(board.checkShipCoords([[5, 6], [5, 7], [5, 8], [5, 9], [5, 10]])).toBe(false);
 })
 
-// test('placing a ship at [[0, 0], [1, 0], [2, 0], [3, 0]] should return true and change the gameboard', () => {
-//     let board = createGameboard();
-//     expect(board.placeShip(0, 0, 4, "x")).toBe(true);
-//     let currBoard = board.getBoard;
-//     for (let i = 0; i < 4; i++) {
-//         expect(currBoard[i][0]).toMatchObject({
-//             length: 4, 
-//             timesHit: 0, 
-//             sunk: false,
-//             hit: expect.any(Function), 
-//             isSunk: expect.any(Function)
-//         ,})
-//     }
-//     console.log(currBoard)
-//     // make sure there all the same ship object
-//     expect(currBoard[0][0] == currBoard[1][0] == currBoard[2][0] == currBoard[3][0]).toBe(true);
-// });
+test('placing a ship at [[0, 0], [1, 0], [2, 0], [3, 0]] should return true and change the gameboard', () => {
+    let board = createGameboard();
+    expect(board.placeShip(0, 0, 4, "col")).toBe(true);
+    let currBoard = board.getBoard;
+    for (let i = 0; i < 4; i++) {
+        expect(currBoard[i][0]).toMatchObject({
+            length: 4, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+    console.log(currBoard[0][0]);
+    console.log(currBoard[1][0]);
+    console.log(currBoard[0][0] === currBoard[1][0]);
+    // make sure there all the same ship object
+    expect((currBoard[0][0] == currBoard[1][0]) == (currBoard[0][0] == currBoard[2][0]) == (currBoard[0,0] == currBoard[3,0])).toBe(true);
+});
