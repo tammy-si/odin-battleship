@@ -1,3 +1,5 @@
+const createShip = require("./ship");
+
 function createGameboard() {
     // make a 2d board to keep track of where the ships and empty spaces are
     return {
@@ -17,28 +19,45 @@ function createGameboard() {
         coordsHit: [],
 
         get getBoard() {
-            return this.board
+            return this.board;
         },
 
-        placeShip(init_x, init_y, shipLength, dir) {
-            let shipCoords = this.getShipCoords();
+        set setBoard(board) {
+            this.board = board;
+        },
+
+        placeShip(init_row, init_col, shipLength, dir) {
+            let shipCoords = this.getShipCoords(init_row, init_col, shipLength, dir);
             // check if every coordinate of the ship would fit in range and is empty
             if (!(this.checkShipCoords(shipCoords))) {
                 // if the ship doesn't fit we just return false and don't continue placing the ship onto the board
                 return false;
             }
+
+            // ship fits, make a new ship 
+            let newShip = createShip(shipLength);
+            // add the ship to the board
+            let currBoard = this.getBoard;
+            for (let i = 0; i < shipCoords.length; i++) {
+                let row = shipCoords[i][0];
+                let col = shipCoords[i][1];
+                currBoard[row][col] = newShip;
+            }
+            console.log(currBoard)
+            this.setBoard = currBoard;
+            return true;
         },
 
         // get ship coords with in the initial
-        getShipCoords(init_x, init_y, shipLength, dir) {
+        getShipCoords(init_row, init_col, shipLength, dir) {
             let shipCoords = []
             for (let i = 0; i < shipLength; i++) {
-                // if it's in x direction change the x value
-                if (dir == 'x') {
-                    shipCoords.push([init_x + i, init_y])
-                // y direction, make the ship coordinates go down
+                // if it's in row direction change the col value to go right
+                if (dir == 'row') {
+                    shipCoords.push([init_row, init_col + i])
+                // col direction, make the ship coordinates go down by going down rows
                 } else {
-                    shipCoords.push([init_x, init_y + i])
+                    shipCoords.push([init_row + i, init_col])
                 }
             }
             return shipCoords;
@@ -47,9 +66,9 @@ function createGameboard() {
         // check ship coords
         checkShipCoords(shipCoords) {
             for (let i = 0; i < shipCoords.length; i++) {
-                let x = shipCoords[i][0];
-                let y = shipCoords[i][1];
-                if(x < 0 || x > 9 || y < 0 || y > 9 || !(this.checkCoordEmpty(x, y))) {
+                let row = shipCoords[i][0];
+                let col = shipCoords[i][1];
+                if(row < 0 || row > 9 || col < 0 || col > 9 || !(this.checkCoordEmpty(row, col))) {
                     return false
                 }
             }
@@ -57,8 +76,8 @@ function createGameboard() {
         },
 
         // make sure that the coordinate is empty (has a zero, not a ship)
-        checkCoordEmpty(x_coord, y_coord) {
-            return (this.getBoard[x_coord][y_coord] == 0)
+        checkCoordEmpty(row, col) {
+            return (this.getBoard[row][col] == 0)
         }
     }
 }
