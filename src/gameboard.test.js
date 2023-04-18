@@ -81,7 +81,70 @@ test('placing a ship at [[0, 0], [1, 0], [2, 0], [3, 0]] should return true and 
             expect(currBoard[i][j]).toBe(0);
         }
     }
+
     // make sure there all the same ship object
     expect((currBoard[0][0] == currBoard[1][0]) == (currBoard[0][0] == currBoard[2][0]) == (currBoard[0,0] == currBoard[3,0])).toBe(true);
 });
 
+
+test('make sure that if you try to place an overlapping ship it does not place', () => {
+    let board = createGameboard();
+    expect(board.placeShip(0, 0, 4, "col")).toBe(true);
+    // placing the 2nd ship here
+    expect(board.placeShip(0, 0, 4, "row")).toBe(false);
+    let currBoard = board.getBoard;
+    for (let i = 0; i < 4; i++) {
+        expect(currBoard[i][0]).toMatchObject({
+            length: 4, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+    // make sure all the other spots are 0
+    // for the first 4 rows, make sure col 1 - 9 are empty
+    for (let i = 0; i < 4; i++) {
+        for (let j = 1; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+    // all the other rows and columns equal zero
+    for (let i = 4; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+    
+    // make sure there all the same ship object
+    expect((currBoard[0][0] == currBoard[1][0]) == (currBoard[0][0] == currBoard[2][0]) == (currBoard[0,0] == currBoard[3,0])).toBe(true);
+});
+
+test('trying to place a ship out of bounds fails (horizontal)', () => {
+    let board = createGameboard();
+    expect(board.placeShip(4, 7, 4, "row")).toBe(false);
+    let currBoard = board.getBoard;
+
+    // make sure all the other spots are 0
+    // all the other rows and columns equal zero
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+});
+
+test('trying to place a ship out of bounds fails (vertical)', () => {
+    let board = createGameboard();
+    expect(board.placeShip(8, 7, 4, "col")).toBe(false);
+    let currBoard = board.getBoard;
+
+    // make sure all the other spots are 0
+    // all the other rows and columns equal zero
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+    
+});

@@ -43,7 +43,6 @@ function createGameboard() {
                 let col = shipCoords[i][1];
                 currBoard[row][col] = newShip;
             }
-            console.log(currBoard)
             this.setBoard = currBoard;
             return true;
         },
