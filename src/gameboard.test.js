@@ -148,3 +148,58 @@ test('trying to place a ship out of bounds fails (vertical)', () => {
     }
     
 });
+
+test('test that gameboard changes after placing 2 ships', () => {
+    let board = createGameboard();
+    // place one ship on the first column 
+    expect(board.placeShip(0, 0, 4, "col")).toBe(true);
+    // place another ship of length 3 on the column right next to it
+    expect(board.placeShip(0, 1, 3, "col")).toBe(true);
+    let currBoard = board.getBoard;
+    // check the first column for the 1st ship
+    for (let i = 0; i < 4; i++) {
+        expect(currBoard[i][0]).toMatchObject({
+            length: 4, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+    // check the 2nd column for the 2nd ship
+    for (let i = 0; i < 3; i++) {
+        expect(currBoard[i][1]).toMatchObject({
+            length: 3, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+
+    // make sure all the other spots are 0
+    // for the first 3 rows, make sure col 2 - 9 are empty
+    for (let i = 0; i < 4; i++) {
+        for (let j = 2; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+
+    expect(currBoard[3][1]).toBe(0);
+
+    // all the other rows and columns equal zero
+    for (let i = 4; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            expect(currBoard[i][j]).toBe(0);
+        }
+    }
+
+    // make sure the 1st ship all the same ship object
+    expect((currBoard[0][0] == currBoard[1][0]) == (currBoard[0][0] == currBoard[2][0]) == (currBoard[0,0] == currBoard[3,0])).toBe(true);
+    // make sure the 2nd ship place is all the same ship object
+    expect((currBoard[0][1] == currBoard[1][1]) == (currBoard[1][1] == currBoard[2][1])).toBe(true);
+
+    // make sure that the 2 ships are different ship objects
+    expect((currBoard[0][0] !== currBoard[0][1])).toBe(true);
+})
+
