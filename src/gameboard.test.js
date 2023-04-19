@@ -203,3 +203,41 @@ test('test that gameboard changes after placing 2 ships', () => {
     expect((currBoard[0][0] !== currBoard[0][1])).toBe(true);
 })
 
+
+test('test placing 2 ship but in both directions gameboard', () => {
+    let board = createGameboard();
+    // place one ship on the first row 
+    expect(board.placeShip(0, 0, 4, "row")).toBe(true);
+    // place another ship of length 3 on the row right below it
+    expect(board.placeShip(1, 0, 3, "col")).toBe(true);
+    let currBoard = board.getBoard;
+    // check the first row for the 1st ship
+    for (let i = 0; i < 4; i++) {
+        expect(currBoard[0][i]).toMatchObject({
+            length: 4, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+    console.log(currBoard);
+    // check the 0th column for the 2nd ship
+    for (let i = 1; i < 4; i++) {
+        expect(currBoard[i][0]).toMatchObject({
+            length: 3, 
+            timesHit: 0, 
+            sunk: false,
+            hit: expect.any(Function), 
+            isSunk: expect.any(Function)
+        ,})
+    }
+    // make sure the 1st ship all the same ship object
+    expect((currBoard[0][0] == currBoard[0][1]) == (currBoard[0][0] == currBoard[0][2]) == (currBoard[0][0] == currBoard[0][3])).toBe(true);
+    // make sure the 2nd ship place is all the same ship object
+    expect((currBoard[1][0] == currBoard[2][0]) == (currBoard[1][0] == currBoard[3][0])).toBe(true);
+
+    // make sure that the 2 ships are different ship objects
+    expect((currBoard[0][0] !== currBoard[1][0])).toBe(true);
+})
+
