@@ -48,6 +48,17 @@ function createPlayer(parentHTMLElem, human) {
                 grid.appendChild(newRow);
             }
             this.parentDiv.appendChild(grid);
+        },
+
+        // HTML element from the block coord
+        HTMLBlockFromCoord(row, col) {
+            // get the parent
+            let grid = this.parentDiv.children[1];
+            // get the rowElem
+            let rowDiv = grid.children[row];
+            // use the column to find the block
+            let block = rowDiv.children[col];
+            return block;
         }
     }
 }
