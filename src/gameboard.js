@@ -123,6 +123,7 @@ function createGameboard() {
             } 
             // mark the coord as attacked
             this.coordsAttacked[row][col] = 1;
+            console.log(this.coordsAttacked);
             return true;
         },
 

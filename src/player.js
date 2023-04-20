@@ -40,12 +40,22 @@ function createPlayer(parentHTMLElem, human) {
                             // get rowNum by looking for the rowDiv in the entire div
                             let gridDiv = rowDiv.parentElement;
                             let rowNum = Array.prototype.indexOf.call(gridDiv.children, rowDiv);
-                            console.log(rowNum, colNum);
+                            // make sure this location wasn't already attacked
+                            if (this.playersGameboard.checkCoordNotAttacked(rowNum, colNum)) {
+                                // change the info
+                                this.attack(this, rowNum, colNum);
+                                // changing the css
+                                if (!this.playersGameboard.checkCoordEmpty(rowNum, colNum)) {
+                                    block.classList.add('ship');
+                                } 
+                                block.classList.add('hit');
+                            } else {
+                                console.log('already hit');
+                            }
                         })
                     // for the player's board
                     } else {
                         // also display the user's ships
-                        console.log(this.playersGameboard.board)
                         if (!this.playersGameboard.checkCoordEmpty(r, c)) {
                             newBlock.classList.add("ship");
                         }

@@ -49,5 +49,13 @@ h1 {
 }
 
 .block.ship {
-    background-color: green;
+    background-color: grey;
+}
+
+.block.ship.hit{
+    background-color: red;
+}
+
+.block.hit {
+    background-color: #dbeafe;
 }
