@@ -42,6 +42,13 @@ function createPlayer(parentHTMLElem, human) {
                             let rowNum = Array.prototype.indexOf.call(gridDiv.children, rowDiv);
                             console.log(rowNum, colNum);
                         })
+                    // for the player's board
+                    } else {
+                        // also display the user's ships
+                        console.log(this.playersGameboard.board)
+                        if (!this.playersGameboard.checkCoordEmpty(r, c)) {
+                            newBlock.classList.add("ship");
+                        }
                     }
                     newRow.appendChild(newBlock);
                 }
