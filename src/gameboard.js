@@ -138,6 +138,11 @@ function createGameboard() {
                 }
             }
             return returnArr;
+        },
+
+        // get block row and col from html element
+        getBlockFromHTML(HTMLElement) {
+
         }
     }
 }
