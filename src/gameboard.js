@@ -106,7 +106,7 @@ function createGameboard() {
             return this.board[row][col];
         },
 
-        attack(row, col) {
+        recieveHit(row, col) {
             // check if the coord has been attacked already. If so return false
             if (!this.checkCoordNotAttacked(row, col)) {
                 return false;
@@ -123,6 +123,7 @@ function createGameboard() {
             } 
             // mark the coord as attacked
             this.coordsAttacked[row][col] = 1;
+            return true;
         }
     }
 }

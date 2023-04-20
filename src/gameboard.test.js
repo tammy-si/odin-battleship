@@ -249,16 +249,16 @@ test('test attacking the board', () => {
     let currBoard = board.getBoard;
     expect(currBoard[0][0].getTimeesHit == 0)
     expect(board.shipsLeft).toEqual(5);
-    board.attack(0, 0);
+    board.recieveHit(0, 0);
     currBoard = board.getBoard;
     expect(currBoard[0][0].getTimeesHit == 1)
-    board.attack(0, 1);
-    board.attack(0, 2);
-    board.attack(0, 3);
+    board.recieveHit(0, 1);
+    board.recieveHit(0, 2);
+    board.recieveHit(0, 3);
     expect(currBoard[0][0].isSunk()).toBe(true);
     expect(board.shipsLeft).toEqual(4);
     // can't hit the same spot twice
-    expect(board.attack(0,0)).toBe(false);
+    expect(board.recieveHit(0,0)).toBe(false);
 })
 
 
