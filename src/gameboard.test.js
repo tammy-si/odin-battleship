@@ -261,4 +261,22 @@ test('test attacking the board', () => {
     expect(board.recieveHit(0,0)).toBe(false);
 })
 
+// test getting all available attack places
+test('testing getting all available attack places', () => {
+    let board = createGameboard();
+    // place one ship on the first row 
+    expect(board.placeShip(0, 0, 4, "row")).toBe(true);
+    // place another ship of length 3 on the row right below it
+    expect(board.placeShip(1, 0, 3, "col")).toBe(true);
+    let currBoard = board.getBoard;
+    expect(currBoard[0][0].getTimeesHit == 0)
+    expect(board.shipsLeft).toEqual(5);
+    board.recieveHit(0, 0);
+    currBoard = board.getBoard;
+    expect(currBoard[0][0].getTimeesHit == 1)
+    board.recieveHit(0, 1);
+    board.recieveHit(0, 2);
+    let attackableCoords = board.getAttackableCoords();
+    expect(attackableCoords.length).toBe(97);
+})
 

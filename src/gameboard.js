@@ -124,6 +124,20 @@ function createGameboard() {
             // mark the coord as attacked
             this.coordsAttacked[row][col] = 1;
             return true;
+        },
+
+        // gets all [row, col] coordinates that's still avaiable for attack
+        getAttackableCoords() {
+            let attackCoords = this.getAttacks;
+            let returnArr = [];
+            for (let r = 0; r < 10; r++) {
+                for(let c = 0; c < 10; c++) {
+                    if (attackCoords[r][c] == 0) {
+                        returnArr.push([r, c])
+                    }
+                }
+            }
+            return returnArr;
         }
     }
 }
