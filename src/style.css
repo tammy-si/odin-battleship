@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+    grid-template-columns: repeat(2, 1fr);
+    background-color:#172554;
+}
+
+header {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.playerGrid, .computerGrid {
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
+.grid {
+    height: 500px;
+    width: 500px;
+    background-color: #93c5fd;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    flex: 1;
+    display: flex;
+}
+
+.block {
+    flex: 1;
+    border: 0.5px solid black;
+}
