@@ -3,6 +3,7 @@ const createShip = require("./ship");
 function createGameboard() {
     // make a 2d board to keep track of where the ships and empty spaces are
     return {
+        // ships are placed here
         board: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -15,11 +16,28 @@ function createGameboard() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ],
-
-        coordsHit: [],
+        //  2d array to keep track of which coords have recieved attacks
+        // 0 hasn't. 1 has
+        coordsAttacked: [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ],
+        shipsLeft: 5,
 
         get getBoard() {
             return this.board;
+        },
+
+        get getAttacks() {
+            return this.coordsAttacked;
         },
 
         set setBoard(board) {
@@ -77,6 +95,34 @@ function createGameboard() {
         // make sure that the coordinate is empty (has a zero, not a ship)
         checkCoordEmpty(row, col) {
             return (this.getBoard[row][col] == 0)
+        },
+
+        // for checking which coords attacked. if this returns true that means that the user is allowed to attack here
+        checkCoordNotAttacked(row, col) {
+            return (this.getAttacks[row][col] == 0);
+        }, 
+
+        getBoardCoord(row, col) {
+            return this.board[row][col];
+        },
+
+        attack(row, col) {
+            // check if the coord has been attacked already. If so return false
+            if (!this.checkCoordNotAttacked(row, col)) {
+                return false;
+            }
+            // else, check if there is a ship in the location
+            if (!this.checkCoordEmpty(row, col)) {
+                // there's a ship. Get the ship and hit it
+                let ship = this.getBoardCoord(row, col);
+                ship.hit();
+                // if the ship is sunk, lower the game boards' ship
+                if (ship.isSunk()) {
+                    this.shipsLeft -= 1;
+                }
+            } 
+            // mark the coord as attacked
+            this.coordsAttacked[row][col] = 1;
         }
     }
 }

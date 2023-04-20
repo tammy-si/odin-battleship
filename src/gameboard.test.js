@@ -221,7 +221,6 @@ test('test placing 2 ship but in both directions gameboard', () => {
             isSunk: expect.any(Function)
         ,})
     }
-    console.log(currBoard);
     // check the 0th column for the 2nd ship
     for (let i = 1; i < 4; i++) {
         expect(currBoard[i][0]).toMatchObject({
@@ -240,4 +239,26 @@ test('test placing 2 ship but in both directions gameboard', () => {
     // make sure that the 2 ships are different ship objects
     expect((currBoard[0][0] !== currBoard[1][0])).toBe(true);
 })
+
+test('test attacking the board', () => {
+    let board = createGameboard();
+    // place one ship on the first row 
+    expect(board.placeShip(0, 0, 4, "row")).toBe(true);
+    // place another ship of length 3 on the row right below it
+    expect(board.placeShip(1, 0, 3, "col")).toBe(true);
+    let currBoard = board.getBoard;
+    expect(currBoard[0][0].getTimeesHit == 0)
+    expect(board.shipsLeft).toEqual(5);
+    board.attack(0, 0);
+    currBoard = board.getBoard;
+    expect(currBoard[0][0].getTimeesHit == 1)
+    board.attack(0, 1);
+    board.attack(0, 2);
+    board.attack(0, 3);
+    expect(currBoard[0][0].isSunk()).toBe(true);
+    expect(board.shipsLeft).toEqual(4);
+    // can't hit the same spot twice
+    expect(board.attack(0,0)).toBe(false);
+})
+
 
