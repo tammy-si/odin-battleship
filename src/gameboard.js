@@ -45,7 +45,6 @@ function createGameboard() {
         },
 
         get allShipsSunk() {
-            console.log(this.shipsLeft);
             return this.shipsLeft == 0;
         },
 

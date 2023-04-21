@@ -15,8 +15,6 @@ function startGame() {
     player.playersGameboard.placeShip(2, 2, 2, "row");
     player.playersGameboard.placeShip(9, 9, 1, "col");
 
-
-
     computer.playersGameboard.placeShip(0, 0, 4, "row");
     computer.playersGameboard.placeShip(0, 0, 4, "col");
     computer.playersGameboard.placeShip(1, 5, 5, "col");
@@ -25,9 +23,8 @@ function startGame() {
     computer.playersGameboard.placeShip(2, 2, 2, "row");
     computer.playersGameboard.placeShip(9, 9, 1, "col");
 
+    // the game loop. Runs the computer move and checks for gameover
     const game = setInterval(() => {
-        console.log(computer.isComputerTurn)
-
         if (computer.isComputerTurn) {
             computer.attackRandom(player);
             // make it no longer the computers turn

@@ -6,6 +6,7 @@ function createPlayer(parentHTMLElem, human) {
         parentDiv: parentHTMLElem,
         isHuman: human,
         isComputerTurn: false,
+        nextHit: [],
 
         attack(opponent, row, col) {
             // opponent should be a player object. 
@@ -15,11 +16,41 @@ function createPlayer(parentHTMLElem, human) {
         
         // random legal hit for the computer mainly
         attackRandom(opponent) {
-            // get all the available attack coordinates
-            let availableAttackCoords = opponent.playersGameboard.getAttackableCoords();
-            let randomCoord = availableAttackCoords[Math.floor(Math.random() * availableAttackCoords.length)];
+            // if the computer's next hit stack isn't empty, pop from it and try to attack
+            if (this.nextHit.length !== 0) {
+                var randomCoord = this.nextHit.pop();
+            } else {
+                // get all the available attack coordinates
+                let availableAttackCoords = opponent.playersGameboard.getAttackableCoords();
+                var randomCoord = availableAttackCoords[Math.floor(Math.random() * availableAttackCoords.length)];
+            }
             // use this randomCoord to change the computer's board
             opponent.updateCSSForCoord(randomCoord[0], randomCoord[1]);
+            // if random location has a ship in it. Add adjacent avaible coordinates to the nextHit stack
+            if (!opponent.playersGameboard.checkCoordEmpty(randomCoord[0], randomCoord[1])) {
+                console.log(this.nextHit)
+                let row = randomCoord[0];
+                let col = randomCoord[1];
+                // make sure the a adjacent coords are in bounds and haven't been hit yet
+                // top middle
+                if (row - 1 >= 0 && opponent.playersGameboard.checkCoordNotAttacked(row-1, col)) {
+                    // add to nextHit stack so the computer can try hitting this spot next
+                    this.nextHit.push([row-1, col])
+                }
+                // middle left
+                if (col - 1 >= 0 && opponent.playersGameboard.checkCoordNotAttacked(row, col - 1)) {
+                    this.nextHit.push([row, col-1])
+                }
+                // middle right
+                if (col + 1 <= 9 && opponent.playersGameboard.checkCoordNotAttacked(row, col - 1)) {
+                    this.nextHit.push([row, col+1])
+                }
+                // middle bottom
+                if (row + 1 <= 9 && opponent.playersGameboard.checkCoordNotAttacked(row+1, col)) {
+                    this.nextHit.push([row+1, col])
+                }
+                console.log(this.nextHit)
+            }
             return opponent.playersGameboard.recieveHit(randomCoord[0], randomCoord[1]);
         },
 
@@ -54,8 +85,6 @@ function createPlayer(parentHTMLElem, human) {
                                 block.classList.add('hit');
                                 // make it the computer's turn
                                 this.isComputerTurn = true;
-                            } else {
-                                console.log('already hit');
                             }
                         })
                     // for the player's board
