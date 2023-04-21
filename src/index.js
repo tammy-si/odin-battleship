@@ -35,12 +35,14 @@ function startGame() {
         }
         // check if the computer has any ships left
         if (computer.playersGameboard.allShipsSunk) {
-            console.log("player won");
+            document.querySelector(".result").style.display = "flex"; 
+            document.querySelector("#winner").textContent = "Player won";
             clearInterval(game);
         };
         // check if the player has any ships left
         if (player.playersGameboard.allShipsSunk) {
-            console.log("computer won")
+            document.querySelector(".result").style.display = "flex"; 
+            document.querySelector("#winner").textContent = "Computer won";
             clearInterval(game);
         };
     }, 100)
