@@ -5,6 +5,7 @@ function createPlayer(parentHTMLElem, human) {
         playersGameboard: createGameboard(),
         parentDiv: parentHTMLElem,
         isHuman: human,
+        isComputerTurn: false,
 
         attack(opponent, row, col) {
             // opponent should be a player object. 
@@ -12,11 +13,13 @@ function createPlayer(parentHTMLElem, human) {
             return opponent.playersGameboard.recieveHit(row, col);
         },
         
-        // random legal hit
+        // random legal hit for the computer mainly
         attackRandom(opponent) {
             // get all the available attack coordinates
             let availableAttackCoords = opponent.playersGameboard.getAttackableCoords();
             let randomCoord = availableAttackCoords[Math.floor(Math.random() * availableAttackCoords.length)];
+            // use this randomCoord to change the computer's board
+            opponent.updateCSSForCoord(randomCoord[0], randomCoord[1]);
             return opponent.playersGameboard.recieveHit(randomCoord[0], randomCoord[1]);
         },
 
@@ -49,6 +52,8 @@ function createPlayer(parentHTMLElem, human) {
                                     block.classList.add('ship');
                                 } 
                                 block.classList.add('hit');
+                                // make it the computer's turn
+                                this.isComputerTurn = true;
                             } else {
                                 console.log('already hit');
                             }
@@ -67,6 +72,7 @@ function createPlayer(parentHTMLElem, human) {
             this.parentDiv.appendChild(grid);
         },
 
+
         // HTML element from the block coord
         HTMLBlockFromCoord(row, col) {
             // get the parent
@@ -76,6 +82,16 @@ function createPlayer(parentHTMLElem, human) {
             // use the column to find the block
             let block = rowDiv.children[col];
             return block;
+        },
+
+        // update CSS at this coord
+        updateCSSForCoord(row, col) {
+            let block = this.HTMLBlockFromCoord(row, col);
+            // changing the css
+            if (!this.playersGameboard.checkCoordEmpty(row, col)) {
+                block.classList.add('ship');
+            } 
+            block.classList.add('hit');
         }
     }
 }
