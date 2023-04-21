@@ -44,6 +44,11 @@ function createGameboard() {
             this.board = board;
         },
 
+        get allShipsSunk() {
+            console.log(this.shipsLeft);
+            return this.shipsLeft == 0;
+        },
+
         placeShip(init_row, init_col, shipLength, dir) {
             let shipCoords = this.getShipCoords(init_row, init_col, shipLength, dir);
             // check if every coordinate of the ship would fit in range and is empty
@@ -123,7 +128,6 @@ function createGameboard() {
             } 
             // mark the coord as attacked
             this.coordsAttacked[row][col] = 1;
-            console.log(this.coordsAttacked);
             return true;
         },
 

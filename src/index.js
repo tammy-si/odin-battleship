@@ -25,17 +25,25 @@ function startGame() {
     computer.playersGameboard.placeShip(2, 2, 2, "row");
     computer.playersGameboard.placeShip(9, 9, 1, "col");
 
-    setInterval(() => {
+    const game = setInterval(() => {
         console.log(computer.isComputerTurn)
 
         if (computer.isComputerTurn) {
             computer.attackRandom(player);
-            // update computer's display
-
             // make it no longer the computers turn
             computer.isComputerTurn = false;
         }
-    }, 500)
+        // check if the computer has any ships left
+        if (computer.playersGameboard.allShipsSunk) {
+            console.log("player won");
+            clearInterval(game);
+        };
+        // check if the player has any ships left
+        if (player.playersGameboard.allShipsSunk) {
+            console.log("computer won")
+            clearInterval(game);
+        };
+    }, 100)
 
     player.drawInitialGrid();
     computer.drawInitialGrid();
