@@ -16,6 +16,7 @@ function createPlayer(parentHTMLElem, human) {
         
         // random legal hit for the computer mainly
         attackRandom(opponent) {
+            console.log(this.nextHit);
             // if the computer's next hit stack isn't empty, pop from it and try to attack
             if (this.nextHit.length !== 0) {
                 var randomCoord = this.nextHit.pop();
@@ -28,7 +29,6 @@ function createPlayer(parentHTMLElem, human) {
             opponent.updateCSSForCoord(randomCoord[0], randomCoord[1]);
             // if random location has a ship in it. Add adjacent avaible coordinates to the nextHit stack
             if (!opponent.playersGameboard.checkCoordEmpty(randomCoord[0], randomCoord[1])) {
-                console.log(this.nextHit)
                 let row = randomCoord[0];
                 let col = randomCoord[1];
                 // make sure the a adjacent coords are in bounds and haven't been hit yet
@@ -42,7 +42,7 @@ function createPlayer(parentHTMLElem, human) {
                     this.nextHit.push([row, col-1])
                 }
                 // middle right
-                if (col + 1 <= 9 && opponent.playersGameboard.checkCoordNotAttacked(row, col - 1)) {
+                if (col + 1 <= 9 && opponent.playersGameboard.checkCoordNotAttacked(row, col + 1)) {
                     this.nextHit.push([row, col+1])
                 }
                 // middle bottom
