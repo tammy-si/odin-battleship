@@ -78,3 +78,7 @@ h1 {
 .place-boat h1 {
     color: white;
 }
+
+.hovered {
+    background-color: #eff6ff;
+}

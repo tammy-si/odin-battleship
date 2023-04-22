@@ -8,7 +8,7 @@ function startGame() {
     // make the playerGrid
     var computer = createPlayer(document.querySelector('.computerGrid'), false);
 
-    let playerShipsToPlace = [2,3,3,4,5];
+    var playerShipsToPlace = [2,3,3,4,5];
     let computerShipsToPlace = [2,3,3,4,5];
 
     // place the computer ships randomly
@@ -23,15 +23,17 @@ function startGame() {
         let randCoord = possibleCoords[Math.floor(Math.random() * possibleCoords.length)];
         computer.playersGameboard.placeShip(randCoord[0], randCoord[1], length, randomDir);
     }
+    
+    let nextShipLength = playerShipsToPlace[playerShipsToPlace.length - 1];
+    drawPlaceShipBoard(nextShipLength, 'row', player);
 
-    // place player boats
-
-    player.playersGameboard.placeShip(0, 0, 4, "row");
-    player.playersGameboard.placeShip(0, 0, 4, "col");
-    player.playersGameboard.placeShip(1, 5, 5, "col");
-    player.playersGameboard.placeShip(8, 4, 3, "row");
-    player.playersGameboard.placeShip(2, 2, 2, "row");
-    player.playersGameboard.placeShip(9, 9, 1, "col");
+    const place = setInterval(() => {
+        // check if all the boats have been placed, hide the place-boat div and  continue with the game
+        if (playerShipsToPlace.length == 0) {
+            document.querySelector(".place-boat").style.display = 'none';
+            clearInterval(place);
+        }
+    }, 100);
 
     // the game loop. Runs the computer move and checks for gameover
     const game = setInterval(() => {
@@ -71,3 +73,61 @@ axisButton.addEventListener("click", ()=> {
         axisButton.value = 'row'
     }
 })
+
+// draws out the board when the player is trying to place a ship
+function drawPlaceShipBoard(length, axis, player) {
+    const placeGrid = document.querySelector(".place-grid");
+    // clear the grid
+    placeGrid.innerHTML = '';
+    // redraw the grid and add appropiate event listeners
+    placeGrid.classList.add('grid');
+    // make a certain amount of row
+    for (let r = 0; r < 10; r++) {
+        let newRow = document.createElement('div');
+        newRow.classList.add("row");
+        for (let c = 0; c < 10; c++) {
+            let newBlock = document.createElement('div');
+            newBlock.classList.add("block");
+            if (!player.playersGameboard.checkCoordEmpty(r, c)) {
+                newBlock.classList.add('.ship')
+            }
+            newRow.appendChild(newBlock);
+        }
+        placeGrid.appendChild(newRow);
+    }
+
+    // get all the coords where the ship would fit
+    let possibleCoords = player.playersGameboard.allCoordsShipFit(length, axis);
+    
+    // add event listeners for all the possible Coords
+    for (let i = 0; i < possibleCoords.length; i++) {
+        // go through all possible coords and add event listeners to the blocks
+        // get the rowElem
+        let rowDiv = placeGrid.children[possibleCoords[i][0]];
+        // use the column to find the block
+        let block = rowDiv.children[possibleCoords[i][1]];
+        block.addEventListener("click", ()=> {
+            player.playersGameboard.placeShip(possibleCoords[i][0], possibleCoords[i][1], length, axis);
+        })
+        // make hover effect
+        block.addEventListener("mouseover", ()=> {
+            let shipCoords = player.playersGameboard.getShipCoords(possibleCoords[i][0], possibleCoords[i][1], length, axis);
+            for (let j = 0; j < shipCoords.length; j++) {
+                let rowDiv = placeGrid.children[shipCoords[j][0]];
+                // use the column to find the block
+                let block = rowDiv.children[shipCoords[j][1]];     
+                block.classList.add("hovered");
+            }
+        })
+        // end the hover effect
+        block.addEventListener('mouseout', ()=> {
+            let shipCoords = player.playersGameboard.getShipCoords(possibleCoords[i][0], possibleCoords[i][1], length, axis);
+            for (let k = 0; k < shipCoords.length; k++) {
+                let rowDiv = placeGrid.children[shipCoords[k][0]];
+                // use the column to find the block
+                let block = rowDiv.children[shipCoords[k][1]];     
+                block.classList.remove("hovered");
+            }
+        })
+    }
+}
