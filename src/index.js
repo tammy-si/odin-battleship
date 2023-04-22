@@ -1,12 +1,15 @@
 import './style.css'
 const createPlayer = require('./player');
 
+const axisButton = document.querySelector('.axis');
+var computer;
+
 function startGame() {
     var isPlayerTurn = true;
     var gameover = false;
     var player = createPlayer(document.querySelector('.playerGrid'), true);
     // make the playerGrid
-    var computer = createPlayer(document.querySelector('.computerGrid'), false);
+    computer = createPlayer(document.querySelector('.computerGrid'), false);
 
     var playerShipsToPlace = [2,3,3,4,5];
     let computerShipsToPlace = [2,3,3,4,5];
@@ -24,16 +27,8 @@ function startGame() {
         computer.playersGameboard.placeShip(randCoord[0], randCoord[1], length, randomDir);
     }
     
-    let nextShipLength = playerShipsToPlace.pop();
-    drawPlaceShipBoard(nextShipLength, 'row', player, playerShipsToPlace);
+    drawPlaceShipBoard(playerShipsToPlace[playerShipsToPlace.length - 1], 'row', player, playerShipsToPlace);
 
-    const place = setInterval(() => {
-        // check if all the boats have been placed, hide the place-boat div and  continue with the game
-        if (playerShipsToPlace.length == 0) {
-            document.querySelector(".place-boat").style.display = 'none';
-            clearInterval(place);
-        }
-    }, 100);
 
     // the game loop. Runs the computer move and checks for gameover
     const game = setInterval(() => {
@@ -56,23 +51,19 @@ function startGame() {
         };
     }, 100)
 
-    player.drawInitialGrid();
-    computer.drawInitialGrid();
+    axisButton.addEventListener("click", ()=> {
+        if (axisButton.value == 'row') {
+            axisButton.textContent = "Axis: Y";
+            axisButton.value = 'col'
+        } else {
+            axisButton.textContent = "Axis: X";
+            axisButton.value = 'row';
+        }
+        drawPlaceShipBoard(playerShipsToPlace[playerShipsToPlace.length - 1], axisButton.value, player, playerShipsToPlace);
+    })
 }
 
 startGame();
-
-const axisButton = document.querySelector('.axis')
-
-axisButton.addEventListener("click", ()=> {
-    if (axisButton.value == 'row') {
-        axisButton.textContent = "Axis: Y";
-        axisButton.value = 'col'
-    } else {
-        axisButton.textContent = "Axis: X";
-        axisButton.value = 'row'
-    }
-})
 
 // draws out the board when the player is trying to place a ship
 function drawPlaceShipBoard(length, axis, player, playerShipsToPlace) {
@@ -111,7 +102,13 @@ function drawPlaceShipBoard(length, axis, player, playerShipsToPlace) {
             // make sure there are ships left to place
             if (playerShipsToPlace.length >= 1) {
                 let nextShipLength = playerShipsToPlace.pop();
-                drawPlaceShipBoard(nextShipLength, axis, player, playerShipsToPlace);
+                drawPlaceShipBoard(playerShipsToPlace[playerShipsToPlace.length - 1], axis, player, playerShipsToPlace);
+            }
+            // get out of place ship mode
+            if (playerShipsToPlace.length == 0) {
+                document.querySelector(".place-boat").style.display = 'none';
+                player.drawInitialGrid();
+                computer.drawInitialGrid();
             }
         })
         // make hover effect
