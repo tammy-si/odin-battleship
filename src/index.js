@@ -24,6 +24,8 @@ function startGame() {
         computer.playersGameboard.placeShip(randCoord[0], randCoord[1], length, randomDir);
     }
 
+    // place player boats
+
     player.playersGameboard.placeShip(0, 0, 4, "row");
     player.playersGameboard.placeShip(0, 0, 4, "col");
     player.playersGameboard.placeShip(1, 5, 5, "col");
@@ -58,3 +60,14 @@ function startGame() {
 
 startGame();
 
+const axisButton = document.querySelector('.axis')
+
+axisButton.addEventListener("click", ()=> {
+    if (axisButton.value == 'row') {
+        axisButton.textContent = "Axis: Y";
+        axisButton.value = 'col'
+    } else {
+        axisButton.textContent = "Axis: X";
+        axisButton.value = 'row'
+    }
+})

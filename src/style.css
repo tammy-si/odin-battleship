@@ -60,7 +60,7 @@ h1 {
     background-color: #dbeafe;
 }
 
-.result {
+.result, .place-boat {
     position: absolute;
     display: none;
     height: 100vh;
@@ -68,4 +68,13 @@ h1 {
     background-color: rgba(0,0,0, 0.8);
     align-items: center;
     justify-content: center;
+}
+
+.place-boat {
+    display: flex;
+    flex-direction: column;
+}
+
+.place-boat h1 {
+    color: white;
 }
