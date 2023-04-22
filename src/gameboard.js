@@ -143,6 +143,24 @@ function createGameboard() {
             }
             return returnArr;
         },
+
+        // returns all the coords where the ship would fit
+        allCoordsShipFit(length, dir) {
+            let result = []
+            // get the current board of ships
+            let board = this.getBoard;
+            for (let r = 0; r < 10; r++) {
+                for (let c = 0; c < 10; c++) {
+                    // get the ship coords for the length and dir for this coord
+                    let possiShipCoord = this.getShipCoords(r, c, length, dir);
+                    // the ship could possibly fit here
+                    if (this.checkShipCoords(possiShipCoord)) {
+                        result.push([r, c])
+                    }
+                }
+            }
+            return result;
+        }
     }
 }
 
