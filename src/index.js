@@ -24,8 +24,8 @@ function startGame() {
         computer.playersGameboard.placeShip(randCoord[0], randCoord[1], length, randomDir);
     }
     
-    let nextShipLength = playerShipsToPlace[playerShipsToPlace.length - 1];
-    drawPlaceShipBoard(nextShipLength, 'row', player);
+    let nextShipLength = playerShipsToPlace.pop();
+    drawPlaceShipBoard(nextShipLength, 'row', player, playerShipsToPlace);
 
     const place = setInterval(() => {
         // check if all the boats have been placed, hide the place-boat div and  continue with the game
@@ -75,7 +75,7 @@ axisButton.addEventListener("click", ()=> {
 })
 
 // draws out the board when the player is trying to place a ship
-function drawPlaceShipBoard(length, axis, player) {
+function drawPlaceShipBoard(length, axis, player, playerShipsToPlace) {
     const placeGrid = document.querySelector(".place-grid");
     // clear the grid
     placeGrid.innerHTML = '';
@@ -89,7 +89,7 @@ function drawPlaceShipBoard(length, axis, player) {
             let newBlock = document.createElement('div');
             newBlock.classList.add("block");
             if (!player.playersGameboard.checkCoordEmpty(r, c)) {
-                newBlock.classList.add('.ship')
+                newBlock.classList.add('ship');
             }
             newRow.appendChild(newBlock);
         }
@@ -108,6 +108,11 @@ function drawPlaceShipBoard(length, axis, player) {
         let block = rowDiv.children[possibleCoords[i][1]];
         block.addEventListener("click", ()=> {
             player.playersGameboard.placeShip(possibleCoords[i][0], possibleCoords[i][1], length, axis);
+            // make sure there are ships left to place
+            if (playerShipsToPlace.length >= 1) {
+                let nextShipLength = playerShipsToPlace.pop();
+                drawPlaceShipBoard(nextShipLength, axis, player, playerShipsToPlace);
+            }
         })
         // make hover effect
         block.addEventListener("mouseover", ()=> {
